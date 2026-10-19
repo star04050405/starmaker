@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>造星主 · Star Maker</title>
+<meta name="theme-color" content="#05060E">
+<meta name="description" content="斯特普尔顿《造星主》十六站漫游手册">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:#05060E;color:#E8E6F0;
+  font-family:'Noto Serif SC','Songti SC',serif;
+  min-height:100vh;overflow-x:hidden;
+}
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 22px 90px}
+/* ---------- hero ---------- */
+.hero{padding:calc(64px + env(safe-area-inset-top)) 4px 34px;text-align:center}
+.hero .en{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;
+  font-size:13px;letter-spacing:.42em;color:#8E93C8;text-transform:uppercase}
+.hero h1{font-size:clamp(46px,13vw,76px);font-weight:900;letter-spacing:.18em;margin:14px 0 4px;
+  background:linear-gradient(115deg,#F4F2FF 30%,#9FA8E8 55%,#E89BB4 80%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px;color:#A9AECF;letter-spacing:.1em}
+.hero .by{margin-top:16px;font-size:12.5px;color:#7C80A8;letter-spacing:.3em}
+.hero .by b{color:#C9CCE8;font-weight:600}
+.quoteline{margin:26px auto 0;max-width:440px;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:14.5px;line-height:1.75;color:#9CA1CC;border-top:1px solid #23263E;border-bottom:1px solid #23263E;padding:16px 6px}
+.quoteline .who{display:block;margin-top:8px;font-size:11px;letter-spacing:.3em;color:#6A6E96;font-style:normal}
+/* ---------- 星图进度 ---------- */
+.chart{margin:34px 0 8px;border:1px solid #1E2140;border-radius:14px;padding:20px 14px 14px;background:rgba(10,12,28,.55);backdrop-filter:blur(4px)}
+.chart .ct{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 12px}
+.chart .ct .l{font-size:11.5px;letter-spacing:.34em;color:#8E93C8}
+.chart .ct .r{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:13px;color:#6A6E96}
+.chart .ct .r b{color:#E8E6F0;font-size:17px;font-weight:600}
+#stars16{display:grid;grid-template-columns:repeat(8,1fr);gap:6px 2px;justify-items:center}
+.st16{width:100%;display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 0}
+.st16 svg{width:17px;height:17px;fill:#20243F;transition:fill .5s,filter .5s,transform .5s}
+.st16 .n{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:9.5px;color:#4A4E78}
+.st16.lit svg{fill:#F2D98A;filter:drop-shadow(0 0 4px rgba(242,217,138,.85));transform:scale(1.12)}
+.st16.lit .n{color:#C9A85C}
+.hint1{text-align:center;font-size:10.5px;color:#55598A;letter-spacing:.28em;margin-top:12px}
+/* ---------- 章节 ---------- */
+.sect{margin-top:40px}
+.sect-h{display:flex;align-items:baseline;gap:12px;padding:0 4px 14px}
+.sect-h .t{font-size:15px;font-weight:900;letter-spacing:.3em}
+.sect-h .e{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:12.5px;color:#7C80A8;letter-spacing:.14em}
+.ch{border-bottom:1px solid #1A1D36}
+.ch-h{width:100%;background:none;border:0;color:inherit;font-family:inherit;text-align:left;
+  display:flex;align-items:center;gap:14px;padding:17px 4px;cursor:pointer}
+.ch-h .no{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;
+  font-size:21px;color:#5A5E8E;min-width:34px;transition:color .4s}
+.ch-h .tx{flex:1;min-width:0}
+.ch-h .nm{display:block;font-size:16.5px;font-weight:600;letter-spacing:.12em}
+.ch-h .en2{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:11.5px;color:#6A6E96;margin-top:3px;letter-spacing:.08em}
+.ch-h .arr{font-size:12px;color:#4A4E78;transition:transform .35s}
+.ch.open .ch-h .no{color:#F2D98A}
+.ch.open .ch-h .arr{transform:rotate(90deg)}
+.ch-b{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.ch.open .ch-b{max-height:480px}
+.ch-bi{padding:2px 4px 22px 52px}
+.ch-bi .lead{font-size:13.5px;line-height:2;color:#B9BBD6}
+.ch-bi .subs{margin-top:12px;display:flex;flex-wrap:wrap;gap:7px}
+.ch-bi .subs span{font-size:10.5px;color:#8E93C8;border:1px solid #262A4C;border-radius:999px;padding:3.5px 10px;letter-spacing:.08em}
+.mk{margin-top:16px;display:inline-flex;align-items:center;gap:8px;border:1px solid #2C3054;background:none;
+  color:#A9AECF;font-family:inherit;font-size:11.5px;letter-spacing:.24em;padding:8.5px 16px;border-radius:999px;cursor:pointer;transition:all .35s}
+.mk .dt{width:7px;height:7px;border-radius:50%;background:#3A3E66;transition:background .35s,box-shadow .35s}
+.mk:hover{border-color:#4A4E8E}
+.mk.done{border-color:#8A7434;color:#F2D98A}
+.mk.done .dt{background:#F2D98A;box-shadow:0 0 8px rgba(242,217,138,.9)}
+/* ---------- 作者 ---------- */
+.author{margin-top:52px;border-top:1px solid #1E2140;padding-top:30px}
+.author .at{font-size:12px;letter-spacing:.4em;color:#8E93C8;text-align:center}
+.author .ab{margin-top:16px;font-size:13px;line-height:2.1;color:#9CA1CC;text-align:center;max-width:460px;margin-left:auto;margin-right:auto}
+.author .ab b{color:#E8E6F0;font-weight:600}
+.praise{margin-top:24px}
+.praise .p{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:15.5px;line-height:1.8;color:#B9BBD6;text-align:center;max-width:480px;margin:0 auto}
+.praise .pw{display:block;margin-top:8px;font-size:10.5px;letter-spacing:.3em;color:#6A6E96;font-style:normal;text-align:center}
+/* ---------- footer ---------- */
+.foot{margin-top:56px;text-align:center}
+.foot .fstar{font-size:18px;color:#3A3E66}
+.foot .fl{margin-top:12px;font-size:10.5px;letter-spacing:.3em;color:#4A4E78;line-height:2.2}
+.foot .fl b{color:#7C80A8;font-weight:400}
+/* toast */
+#toast{position:fixed;left:50%;bottom:38px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
+  background:#12142A;border:1px solid #2C3054;color:#F2D98A;font-size:12px;letter-spacing:.22em;
+  padding:10px 20px;border-radius:999px;transition:all .4s;z-index:9;font-family:'Noto Serif SC',serif}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.fadein{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}
+.fadein.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="en">A COSMIC PILGRIMAGE</div>
+    <h1>造星主</h1>
+    <div class="sub">Star Maker · 1937</div>
+    <div class="by"><b>奥拉夫·斯特普尔顿</b> 著 · 宝树 译</div>
+    <div class="quoteline fadein">
+      "Probably the most powerful work of imagination ever written."
+      <span class="who">— ARTHUR C. CLARKE</span>
+    </div>
+  </header>
+
+  <section class="chart fadein">
+    <div class="ct">
+      <span class="l">十六站星图</span>
+      <span class="r">已点亮 <b id="cnt">0</b> / 16</span>
+    </div>
+    <div id="stars16"></div>
+    <div class="hint1">读一站，点亮一颗星</div>
+  </section>
+
+  <main class="sect">
+    <div class="sect-h"><span class="t">漫游手册</span><span class="e">The Pilgrimage</span></div>
+    <div id="chs"></div>
+  </main>
+
+  <section class="author fadein">
+    <div class="at">关于这场漫游</div>
+    <div class="ab">一个英国人在黄昏的山坡上睡着，灵魂离体，开始了一场<b>穿越亿万星系的朝圣</b>。它见过异星文明，汇入过银河乌托邦，发现恒星本身就是活物，最终站到造物主面前——然后醒来，<b>手里仍握着黄昏</b>。</div>
+    <div class="praise">
+      <div class="p">"The one great grey holy book of science fiction."</div>
+      <span class="pw">— BRIAN W. ALDISS</span>
+    </div>
+  </section>
+
+  <footer class="foot fadein">
+    <div class="fstar">✧ ✦ ✧</div>
+    <div class="fl"><b>STAR MAKER</b> · OLAF STAPLEDON<br>十六站漫游手册 · 读完请回到人间</div>
+  </footer>
+
+</div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const CH = [
+{n:'地球', en:'The Earth', lead:'黄昏的山坡上，「我」从身体里醒来，像一片浮起的雾。向下看，是灯火里的英国海岸；向上看，群星第一次不是装饰，而是迎面而来的深渊。', subs:['出发点','群星间的地球']},
+{n:'星际之旅', en:'Interstellar Travel', lead:'灵魂学会了在星际空间里游动。光年不再是数字，而是一寸一寸游过的水。孤独在这一站变得具体：整片星海，只有一个出窍的漫游者。', subs:[]},
+{n:'另一个地球', en:'The Other Earth', lead:'落在一颗「异地球」上——历史与人类惊人地相似，却走向不同的岔口。漫游者与一个当地人合体，借他的眼睛看见了另一种可能的我们。', subs:['初临异星','繁忙的世界','种族的前景']},
+{n:'重启旅程', en:'Re-Embarkation', lead:'离开时，异地球的同伴加入了漫游。一个变成两个，两个将变成一支队伍——这场朝圣从独旅，慢慢长成星群。', subs:[]},
+{n:'无数个世界', en:'Myriad Worlds', lead:'接下来是旋风式的漫游：长翅膀的文明、共同分担心智的种族、乘着行星当飞船的「航海船族」。世界多到只能掠过，而每一站都像一次重生。', subs:['千奇百怪的世界','奇形怪状的「人」','航海船族']},
+{n:'寻觅造星主', en:'Intimations of the Star Maker', lead:'见过太多造物之后，队伍开始追问同一个问题：这些都是谁做的？书名第一次真正出现——寻访「造星主」，从此是全部旅程的目的地。', subs:[]},
+{n:'更奇特的世界', en:'Further Worlds', lead:'旅行越来越深入生命的语法：两种生物共用一个心智的共生族，许多身体共享一个自我的群居者，以及把整个物种活成一株植物的植物族人。', subs:['共生种族','多身体生物','植物族人及其他']},
+{n:'探索者之变', en:'The Explorers', lead:'漫游者的队伍滚雪球般汇入更多星球的灵魂，视野再次升维——个体的「我」越来越淡，一个横跨星海的「我们」逐渐成形。', subs:[]},
+{n:'银河世界共同体', en:'The Community of Worlds', lead:'整个银河系出现了文明的大联合：乌托邦、战争、危机、狂乱者的悲剧。理想国不是终点，而是又一轮跌宕的起点。', subs:['乌托邦纪略','诸世界之战','银河历史的危机','亚星系的成就','狂乱者的悲剧','银河乌托邦']},
+{n:'银河全景', en:'The Galactic Vision', lead:'站得足够远之后，银河不再是一堆星星，而是一部完整的历史——几十亿年的起落，可以像翻一本书一样被读完。', subs:[]},
+{n:'星辰与虫豸', en:'Stars and Vermin', lead:'本书最大的一次眩晕：恒星本身是活物，星云在思考，文明对它们而言不过是皮肤上的微尘。亿万个星系，都有各自的奇灾与共生。', subs:['亿万个星系','银河奇灾','星辰秘闻','银河共生体']},
+{n:'不成形的宇宙之灵', en:'The Cosmic Spirit', lead:'所有心灵开始尝试合成一个宇宙级的心智。可它始终「不成形」——宇宙想理解自己，却还差最后一步。', subs:[]},
+{n:'开端与结局', en:'The Beginning and the End', lead:'漫游者重返时间的第一缕星云，一直看到最后一颗恒星的熄灭。宇宙有开端，有至高时刻，也有结局——而漫游还在继续。', subs:['重返星云','至高时刻即将来临','至高时刻以及之后']},
+{n:'创世的神话', en:'The Myth of Creation', lead:'队伍终于逼近那个终极问题的答案形状：创造是艰难的、笨拙的、带着悔意的。创世不是一声令下，而是一场漫长的练习。', subs:[]},
+{n:'造物主及其作品', en:'The Maker and His Works', lead:'与造星主对望的一刻：祂不是全能的神，而是一个仍在学习创造的艺术家。我们的宇宙，可能只是祂无数草稿里的一页。', subs:['不成熟的创造','成熟的创造','最终的宇宙，永恒的精神']},
+{n:'尾声：重返地球', en:'Epilogue: Back to Earth', lead:'漫游结束，「我」回到黄昏的山坡，回到自己的身体。星空没有变，看星空的人已经变过一轮宇宙。', subs:[]},
+];
+
+// ---------- 星图 ----------
+const starSVG = '<svg viewBox="0 0 24 24"><path d="M12 1.6l2.9 6.6 7.1.7-5.4 4.8 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 8.9l7.1-.7z"/></svg>';
+const LOG_KEY = 'starmaker-log-v1';
+let log = {};
+try{ log = JSON.parse(localStorage.getItem(LOG_KEY) || '{}'); }catch(e){ log = {}; }
+const litCount = () => Object.values(log).filter(Boolean).length;
+
+$('#stars16').innerHTML = CH.map((c,i)=>
+  '<div class="st16" data-i="'+i+'">'+starSVG+'<span class="n">'+(i+1)+'</span></div>').join('');
+
+$('#chs').innerHTML = CH.map((c,i)=>
+  '<div class="ch" data-i="'+i+'">'+
+    '<button class="ch-h" aria-expanded="false">'+
+      '<span class="no">'+String(i+1).padStart(2,'0')+'</span>'+
+      '<span class="tx"><span class="nm">'+(i<15?'第'+['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'][i]+'章 · ':'第十六章 · ')+c.n+'</span>'+
+      '<span class="en2">'+c.en+'</span></span>'+
+      '<span class="arr">›</span>'+
+    '</button>'+
+    '<div class="ch-b"><div class="ch-bi">'+
+      '<div class="lead">'+c.lead+'</div>'+
+      (c.subs.length?'<div class="subs">'+c.subs.map(s=>'<span>'+s+'</span>').join('')+'</div>':'')+
+      '<button class="mk" data-i="'+i+'"><span class="dt"></span><span class="mk-t">读完此站</span></button>'+
+    '</div></div>'+
+  '</div>').join('');
+
+function refresh(){
+  $('#cnt').textContent = litCount();
+  document.querySelectorAll('.st16').forEach(el=>{
+    el.classList.toggle('lit', !!log[CH[+el.dataset.i].en]);
+  });
+  document.querySelectorAll('.mk').forEach(b=>{
+    const done = !!log[CH[+b.dataset.i].en];
+    b.classList.toggle('done', done);
+    b.querySelector('.mk-t').textContent = done ? '已点亮' : '读完此站';
+  });
+  if(litCount()===16) toast('✦ 十六站全点亮 · 欢迎回到人间');
+}
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+document.querySelectorAll('.ch-h').forEach(h=>h.addEventListener('click',()=>{
+  const ch = h.parentElement;
+  const open = ch.classList.toggle('open');
+  h.setAttribute('aria-expanded', open);
+}));
+document.querySelectorAll('.mk').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation();
+  const i = +b.dataset.i, key = CH[i].en;
+  log[key] = !log[key];
+  localStorage.setItem(LOG_KEY, JSON.stringify(log));
+  refresh();
+  if(log[key]) toast('✦ 第 '+(i+1)+' 站已点亮');
+}));
+refresh();
+
+// ---------- 入场动画 ----------
+const io = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}),{threshold:.08});
+document.querySelectorAll('.fadein').forEach(el=>io.observe(el));
+
+// ---------- 星空 canvas ----------
+(function(){
+  const cv = $('#sky'), ctx = cv.getContext('2d');
+  let W, H, stars = [];
+  function resize(){
+    W = cv.width = innerWidth * devicePixelRatio;
+    H = cv.height = innerHeight * devicePixelRatio;
+    cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+    stars = Array.from({length: Math.min(220, Math.floor(innerWidth*innerHeight/6500))}, ()=>({
+      x: Math.random()*W, y: Math.random()*H,
+      r: (Math.random()*1.1+.3)*devicePixelRatio,
+      a: Math.random(), da: (Math.random()*.012+.003),
+      vy: (Math.random()*.05+.012)*devicePixelRatio,
+      hue: Math.random()<.78 ? '255,255,255' : (Math.random()<.5 ? '190,200,255' : '255,205,220')
+    }));
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(const s of stars){
+      s.a += s.da; if(s.a>1||s.a<0) s.da*=-1;
+      s.y += s.vy; if(s.y>H){ s.y = 0; s.x = Math.random()*W; }
+      const al = .25 + Math.abs(s.a)*.55;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, 7);
+      ctx.fillStyle = 'rgba('+s.hue+','+al.toFixed(3)+')';
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  addEventListener('resize', resize);
+  resize(); tick();
+})();
+
+</script>
+</body>
+</html>
